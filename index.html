@@ -1,318 +1,705 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>МІСІЯ ГІДЕОН — АНАЛІТИЧНА СИСТЕМА · САР УГІ ГУНП в Черкаській області</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#050813; --bg2:#0a0e1a;
-  --ink:#e2e8f0; --dim:#5a7099; --dim2:#3a5578;
-  --blue:#60a5fa; --blue-glow:#3b82f6;
-  --green:#3df5a0; --amber:#fbbf24; --red:#f87171; --purple:#c084fc; --violet:#a78bfa;
-  --ft:'Bebas Neue',sans-serif; --fb:'Raleway',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--bg); color:var(--ink); font-family:var(--fb); font-weight:300;
-  overflow-x:hidden;
-}
-#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
-.star{position:absolute;border-radius:50%;background:#fff;animation:tw var(--t,4s) ease-in-out infinite;}
-@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>МІСІЯ ГІДЕОН — АНАЛІТИЧНА СИСТЕМА · САР УГІ ГУНП в Черкаській області</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050813;
+      --bg2: #0a0e1a;
+      --ink: #e2e8f0;
+      --dim: #5a7099;
+      --dim2: #3a5578;
+      --blue: #60a5fa;
+      --blue-glow: #3b82f6;
+      --green: #3df5a0;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --purple: #c084fc;
+      --violet: #a78bfa;
+      --ft: 'Bebas Neue', sans-serif;
+      --fb: 'Raleway', sans-serif;
+    }
 
-nav#dots{
-  position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:500;
-  display:flex; flex-direction:column; gap:14px;
-}
-.btn-container {
-    margin-top: 30px;
-    text-align: center;
-}
-.btn-link {
-    display: inline-block;
-    padding: 14px 32px;
-    font-family: var(--fb);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #dce8f0;
-    background: rgba(96, 165, 250, 0.1);
-    border: 1px solid rgba(96, 165, 250, 0.3);
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: all 0.2s ease-out;
-}
-.btn-link:hover {
-    color: #fff;
-    background: rgba(96, 165, 250, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-nav#dots button{
-  width:9px;height:9px;border-radius:50%; border:1px solid rgba(140,180,255,.4);
-  background:transparent; cursor:pointer; padding:0; transition:all .3s;
-}
-nav#dots button.active{background:var(--blue); box-shadow:0 0 10px var(--blue); transform:scale(1.3);}
+    html {
+      scroll-behavior: smooth;
+    }
 
-.slide{
-  position:relative; z-index:2; min-height:100vh; width:100%;
-  display:flex; align-items:center; justify-content:center;
-  padding:80px 8vw; scroll-snap-align:start;
-}
-main{scroll-snap-type:y proximity;}
-.inner{max-width:1100px; width:100%; opacity:0; transform:translateY(30px); transition:opacity .9s ease, transform .9s ease;}
-.slide.in .inner{opacity:1; transform:translateY(0);}
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--fb);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
 
-.eyebrow{
-  font-family:var(--ft); letter-spacing:.35em; font-size:13px; color:var(--blue);
-  text-shadow:0 0 14px rgba(96,165,250,.6); margin-bottom:10px;
-}
-h1.big{
-  font-family:var(--ft); font-size:clamp(40px,7vw,88px); letter-spacing:.03em; line-height:.95;
-  color:#fff; text-shadow:0 0 30px rgba(96,165,250,.35); margin-bottom:20px;
-}
-p.lead{font-size:19px; line-height:1.7; color:#b8c8e0; max-width:760px; font-weight:300;}
-p.lead b{color:#fff; font-weight:600;}
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-.stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:16px; margin:34px 0;}
-.stat{
-  background:rgba(15,22,40,.65); border:1px solid rgba(100,160,255,.18); border-radius:14px;
-  padding:20px 18px; backdrop-filter:blur(6px);
-}
-.stat .n{font-family:var(--ft); font-size:38px; letter-spacing:.02em; line-height:1;}
-.stat .l{font-size:11.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.05em; margin-top:8px; line-height:1.4;}
-.n.blue{color:var(--blue)} .n.green{color:var(--green)} .n.amber{color:var(--amber)} .n.red{color:var(--red)} .n.purple{color:var(--purple)}
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      animation: tw var(--t, 4s) ease-in-out infinite;
+    }
 
-.panel{
-  background:rgba(15,22,40,.55); border:1px solid rgba(100,160,255,.16); border-radius:16px;
-  padding:24px 26px; margin-top:22px;
-}
-.panel h3{font-family:var(--ft); font-size:20px; letter-spacing:.06em; color:#fff; margin-bottom:12px; font-weight:400;}
-.panel h3 span{color:var(--blue);}
-.panel p{font-size:15px; line-height:1.7; color:#a8bcd8; margin-bottom:8px;}
-.tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
-.tag{font-size:11.5px; padding:5px 12px; border-radius:20px; border:1px solid rgba(255,255,255,.15); color:#c0d4f0; background:rgba(255,255,255,.03);}
+    @keyframes tw {
 
-.alert{
-  display:flex; gap:14px; align-items:flex-start; border-left:3px solid var(--red);
-  background:rgba(248,113,113,.08); border-radius:0 10px 10px 0; padding:16px 20px; margin:18px 0;
-}
-.alert .ico{font-size:22px;}
-.alert .txt b{color:#fff; display:block; margin-bottom:4px; font-size:15px;}
-.alert .txt span{font-size:13.5px; color:#e0a898; line-height:1.6;}
+      0%,
+      100% {
+        opacity: .15
+      }
 
-.alert.good{border-left-color:var(--green); background:rgba(61,245,160,.07);}
-.alert.good .txt span{color:#9fd8b8;}
-.alert.warn{border-left-color:var(--amber); background:rgba(251,191,36,.08);}
-.alert.warn .txt span{color:#e0c898;}
+      50% {
+        opacity: .9
+      }
+    }
 
-.funnel{display:flex; flex-direction:column; gap:0; margin:30px 0;}
-.fstep{
-  display:flex; align-items:center; gap:18px; padding:16px 22px;
-  border:1px solid rgba(100,160,255,.15); border-radius:12px; background:rgba(15,22,40,.5);
-  position:relative; margin-bottom:14px;
-}
-.fstep::after{
-  content:''; position:absolute; left:38px; bottom:-14px; width:1px; height:14px;
-  background:linear-gradient(rgba(100,160,255,.5),transparent);
-}
-.fstep:last-child::after{display:none;}
-.fnum{font-family:var(--ft); font-size:22px; color:var(--blue); width:34px; flex-shrink:0; text-align:center;}
-.ftxt b{display:block; color:#fff; font-size:15.5px; margin-bottom:3px;}
-.ftxt span{font-size:13px; color:var(--dim);}
+    nav#dots {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
 
-.two-col{display:grid; grid-template-columns:1.2fr 1fr; gap:26px;}
-@media(max-width:820px){.two-col{grid-template-columns:1fr;}}
+    .btn-container {
+      margin-top: 30px;
+      text-align: center;
+    }
 
-.orbit-badge{
-  display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:20px;
-  font-size:12px; letter-spacing:.05em; margin-bottom:18px;
-  background:rgba(96,165,250,.1); border:1px solid rgba(96,165,250,.3); color:var(--blue);
-}
-hr.div{border:none; border-top:1px solid rgba(100,160,255,.15); margin:22px 0;}
-.scrolldown{position:absolute; bottom:34px; left:50%; transform:translateX(-50%); font-size:12px; color:var(--dim2); letter-spacing:.2em; animation:bob 2s ease-in-out infinite;}
-@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+    .btn-link {
+      display: inline-block;
+      padding: 14px 32px;
+      font-family: var(--fb);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #dce8f0;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease-out;
+    }
 
-.closer{font-family:var(--ft); font-size:clamp(26px,4vw,42px); color:#fff; line-height:1.3; letter-spacing:.02em;}
-.closer .hl{color:var(--blue); text-shadow:0 0 20px rgba(96,165,250,.5);}
-</style>
+    .btn-link:hover {
+      color: #fff;
+      background: rgba(96, 165, 250, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    nav#dots button {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid rgba(140, 180, 255, .4);
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: all .3s;
+    }
+
+    nav#dots button.active {
+      background: var(--blue);
+      box-shadow: 0 0 10px var(--blue);
+      transform: scale(1.3);
+    }
+
+    .slide {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 8vw;
+      scroll-snap-align: start;
+    }
+
+    main {
+      scroll-snap-type: y proximity;
+    }
+
+    .inner {
+      max-width: 1100px;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+
+    .slide.in .inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .eyebrow {
+      font-family: var(--ft);
+      letter-spacing: .35em;
+      font-size: 13px;
+      color: var(--blue);
+      text-shadow: 0 0 14px rgba(96, 165, 250, .6);
+      margin-bottom: 10px;
+    }
+
+    h1.big {
+      font-family: var(--ft);
+      font-size: clamp(40px, 7vw, 88px);
+      letter-spacing: .03em;
+      line-height: .95;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(96, 165, 250, .35);
+      margin-bottom: 20px;
+    }
+
+    p.lead {
+      font-size: 19px;
+      line-height: 1.7;
+      color: #b8c8e0;
+      max-width: 760px;
+      font-weight: 300;
+    }
+
+    p.lead b {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      margin: 34px 0;
+    }
+
+    .stat {
+      background: rgba(15, 22, 40, .65);
+      border: 1px solid rgba(100, 160, 255, .18);
+      border-radius: 14px;
+      padding: 20px 18px;
+      backdrop-filter: blur(6px);
+    }
+
+    .stat .n {
+      font-family: var(--ft);
+      font-size: 38px;
+      letter-spacing: .02em;
+      line-height: 1;
+    }
+
+    .stat .l {
+      font-size: 11.5px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .n.blue {
+      color: var(--blue)
+    }
+
+    .n.green {
+      color: var(--green)
+    }
+
+    .n.amber {
+      color: var(--amber)
+    }
+
+    .n.red {
+      color: var(--red)
+    }
+
+    .n.purple {
+      color: var(--purple)
+    }
+
+    .panel {
+      background: rgba(15, 22, 40, .55);
+      border: 1px solid rgba(100, 160, 255, .16);
+      border-radius: 16px;
+      padding: 24px 26px;
+      margin-top: 22px;
+    }
+
+    .panel h3 {
+      font-family: var(--ft);
+      font-size: 20px;
+      letter-spacing: .06em;
+      color: #fff;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    .panel h3 span {
+      color: var(--blue);
+    }
+
+    .panel p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #a8bcd8;
+      margin-bottom: 8px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      font-size: 11.5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, .15);
+      color: #c0d4f0;
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .alert {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      border-left: 3px solid var(--red);
+      background: rgba(248, 113, 113, .08);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin: 18px 0;
+    }
+
+    .alert .ico {
+      font-size: 22px;
+    }
+
+    .alert .txt b {
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .alert .txt span {
+      font-size: 13.5px;
+      color: #e0a898;
+      line-height: 1.6;
+    }
+
+    .alert.good {
+      border-left-color: var(--green);
+      background: rgba(61, 245, 160, .07);
+    }
+
+    .alert.good .txt span {
+      color: #9fd8b8;
+    }
+
+    .alert.warn {
+      border-left-color: var(--amber);
+      background: rgba(251, 191, 36, .08);
+    }
+
+    .alert.warn .txt span {
+      color: #e0c898;
+    }
+
+    .funnel {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 30px 0;
+    }
+
+    .fstep {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 22px;
+      border: 1px solid rgba(100, 160, 255, .15);
+      border-radius: 12px;
+      background: rgba(15, 22, 40, .5);
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .fstep::after {
+      content: '';
+      position: absolute;
+      left: 38px;
+      bottom: -14px;
+      width: 1px;
+      height: 14px;
+      background: linear-gradient(rgba(100, 160, 255, .5), transparent);
+    }
+
+    .fstep:last-child::after {
+      display: none;
+    }
+
+    .fnum {
+      font-family: var(--ft);
+      font-size: 22px;
+      color: var(--blue);
+      width: 34px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .ftxt b {
+      display: block;
+      color: #fff;
+      font-size: 15.5px;
+      margin-bottom: 3px;
+    }
+
+    .ftxt span {
+      font-size: 13px;
+      color: var(--dim);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 26px;
+    }
+
+    @media(max-width:820px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .orbit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      letter-spacing: .05em;
+      margin-bottom: 18px;
+      background: rgba(96, 165, 250, .1);
+      border: 1px solid rgba(96, 165, 250, .3);
+      color: var(--blue);
+    }
+
+    hr.div {
+      border: none;
+      border-top: 1px solid rgba(100, 160, 255, .15);
+      margin: 22px 0;
+    }
+
+    .scrolldown {
+      position: absolute;
+      bottom: 34px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--dim2);
+      letter-spacing: .2em;
+      animation: bob 2s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0)
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(8px)
+      }
+    }
+
+    .closer {
+      font-family: var(--ft);
+      font-size: clamp(26px, 4vw, 42px);
+      color: #fff;
+      line-height: 1.3;
+      letter-spacing: .02em;
+    }
+
+    .closer .hl {
+      color: var(--blue);
+      text-shadow: 0 0 20px rgba(96, 165, 250, .5);
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="stars"></div>
-<nav id="dots">
-  <button data-i="0" class="active"></button><button data-i="1"></button><button data-i="2"></button>
-  <button data-i="3"></button><button data-i="4"></button><button data-i="5"></button>
-</nav>
+  <div id="stars"></div>
+  <nav id="dots">
+    <button data-i="0" class="active"></button><button data-i="1"></button><button data-i="2"></button>
+    <button data-i="3"></button><button data-i="4"></button><button data-i="5"></button>
+  </nav>
 
-<main>
+  <main>
 
-<!-- SLIDE 0 — ЗАПУСК МІСІЇ -->
-<section class="slide" id="s0">
-  <div class="inner">
-    <div class="eyebrow">МІСІЯ «ГІДЕОН» · ПІДСУМКИ СЛУЖБОВОЇ ДІЯЛЬНОСТІ</div>
-    <h1 class="big">САР<br>УГІ ГУНП В ЧЕРКАСЬКІЙ ОБЛАСТІ</h1>
-    <p class="lead">ЦИФРОВІЗАЦІЯ <b>КОНТРОЛЮ</b> Це наш операційний стандарт. Ми відмовилися від хаотичних паперових звітів на користь візуального контролю: <b>канбани</b> керують рухом завдань, а <b>дашборди</b> підсвічують точки напруги в реальному часі.</p>
-    <p class="lead" style="margin-top:14px;"> Наша робота: три канбани, один дашборд, аналіз — і карта, на якій точно видно, де ми вже сильні, а де ми побудували конкретний план росту.</p>
-  </div>
-  <div class="scrolldown">▾ ГІПЕРСТРИБОК</div>
-</section>
-
-<!-- SLIDE 1 — ЕКСПЕДИЦІЯ ПОГ -->
-<section class="slide" id="s1">
-  <div class="inner">
-    <div class="orbit-badge">🛰 СЕКТОР Цільова перевірка поліцейських офіцерів громади </div>
-    <div class="eyebrow">Цифри говорять самі за себе.</div>
-    <h1 class="big" style="font-size:clamp(34px,5.5vw,64px)">ПОЛІЦЕЙСЬКІ<br>ОФІЦЕРИ ГРОМАДИ</h1>
-    <p class="lead">Тестування, проведене серед 66 офіцерів громади, дозволило встановити реальний стан справ: виявлено диспропорцію між покладеними на ПОГ завданнями та наявним ресурсом для їх виконання.</p>
-
-    <div class="stat-grid">
-      <div class="stat"><div class="n red">86,4%</div><div class="l">Головна причина навантаження — мобілізаційні завдання (ТЦК/СП)</div></div>
-      <div class="stat"><div class="n amber">74,2%</div><div class="l">Критичний дефіцит часу на превенцію через додаткові навантаження</div></div>
-      <div class="stat"><div class="n red">53%</div><div class="l">Недостатньо пального для патрулювання дільниці</div></div>
-      <div class="stat"><div class="n purple">90,9%</div><div class="l">Показники KPI не відображають реальні потреби громади</div></div>
-      <div class="stat"><div class="n amber">34,8%</div><div class="l">Деякі поліцейські не обрали б цю посаду знову — ризик відтоку до 35% за 2 роки</div></div>
-    </div>
-
-    <div class="panel">
-      <h3>Точна діагностика <span>— те, що ми знайшли </span></h3>
-      <p>Ми провели пряме опитування 66 офіцерів, що дозволило отримати об’єктивну картину проблем. Визначено критичні точки: надмірне навантаження, пов’язане з мобілізаційними завданнями, дефіцит матеріально-технічних ресурсів та застарілі KPI, які не враховують специфіку роботи з громадою.</p>
-      <p>Це і є цінність нашої роботи: не здогадки, а точні цифри, з якими вже можна діяти.</p>
-    </div>
-
-    <div class="panel" style="border-color:rgba(61,245,160,.25)">
-      <h3 style="color:var(--green)">Готові управлінські рішення: <span style="color:var(--green)">— впровадження в межах чинних повноважень</span></h3>
-      <p>Ми не зупинились на діагнозі. За кожною знайденою проблемою вже стоїть конкретний, реалістичний план — розроблений і готовий до впровадження вже зараз:</p>
-      <div class="tag-row">
-        <span class="tag">1–2 захищені дні на тиждень без ТЦК</span>
-        <span class="tag">Щотижневий облік реального часу</span>
-        <span class="tag">План роботи з громадою</span>
-        <span class="tag">Клопотання щодо ліміту пального</span>
-        <span class="tag">Якісні KPI замість «палочних»</span>
-        <span class="tag">Щомісячна зустріч керівника з ПОГ</span>
-        <span class="tag">Надбавка за сільську специфіку</span>
-        <span class="tag">Виїзний психолог щокварталу</span>
+    <!-- SLIDE 0 — ЗАПУСК МІСІЇ -->
+    <section class="slide" id="s0">
+      <div class="inner">
+        <div class="eyebrow">МІСІЯ «ГІДЕОН» · ПІДСУМКИ СЛУЖБОВОЇ ДІЯЛЬНОСТІ</div>
+        <h1 class="big">САР<br>УГІ ГУНП В ЧЕРКАСЬКІЙ ОБЛАСТІ</h1>
+        <p class="lead">ЦИФРОВІЗАЦІЯ <b>КОНТРОЛЮ</b> Це наш операційний стандарт. Ми відмовилися від хаотичних паперових
+          звітів на користь візуального контролю: <b>канбани</b> керують рухом завдань, а <b>дашборди</b> підсвічують
+          точки напруги в реальному часі.</p>
+        <p class="lead" style="margin-top:14px;"> Наша робота: три канбани, один дашборд, аналіз — і карта, на якій
+          точно видно, де ми вже сильні, а де ми побудували конкретний план росту.</p>
       </div>
-    </div>
-    <div class="btn-container">
-        <a href="Канбан Поги (1).html" target="_blank" class="btn-link">Відкрити Канбан-дошку ПОГ 🔗</a>
-    </div>
-  </div>
-</section>
+      <div class="scrolldown">▾ ГІПЕРСТРИБОК</div>
+    </section>
 
-<!-- SLIDE 2 — ЦЕНТР УПРАВЛІННЯ ДИСЦИПЛІНА -->
-<section class="slide" id="s2">
-  <div class="inner">
-    <div class="orbit-badge">⚖️ СЕКТОР 2 · МЕХАНІЗМ КОНТРОЛЮ</div>
-    <div class="eyebrow">ЦЕНТР УПРАВЛІННЯ</div>
-    <h1 class="big" style="font-size:clamp(34px,5.5vw,64px)">«Інтерактивний курс «Алгоритм службового розслідування»</h1>
-    <p class="lead">Створено єдиний канбан-алгоритм службових розслідувань. Спираючись на накопичений досвід, ми систематизували весь процес від «нульової точки» до завершального висновку.</p>
+    <!-- SLIDE 1 — ЕКСПЕДИЦІЯ ПОГ -->
+    <section class="slide" id="s1">
+      <div class="inner">
+        <div class="orbit-badge">🛰 СЕКТОР Цільова перевірка поліцейських офіцерів громади </div>
+        <div class="eyebrow">Цифри говорять самі за себе.</div>
+        <h1 class="big" style="font-size:clamp(34px,5.5vw,64px)">ПОЛІЦЕЙСЬКІ<br>ОФІЦЕРИ ГРОМАДИ</h1>
+        <p class="lead">Тестування, проведене серед 66 офіцерів громади, дозволило встановити реальний стан справ:
+          виявлено диспропорцію між покладеними на ПОГ завданнями та наявним ресурсом для їх виконання.</p>
 
-    <div class="funnel">
-      <div class="fstep"><div class="fnum">01</div><div class="ftxt"><b>Підстава  для службового розслідування</b><span> Скарга, повідомлення, виявлене порушення дисципліни</span></div></div>
-      <div class="fstep"><div class="fnum">02</div><div class="ftxt"><b>Призначення службового розслідування</b><span>Наказ керівника, форма проведення — одноособово або комісією; строк 30 діб, у воєнний стан — 15 діб</span></div></div>
-      <div class="fstep"><div class="fnum">03</div><div class="ftxt"><b>Збір необіхдних даних</b><span>Право поліцейського на пояснення, ознайомлення з матеріалами та представника — під наглядом, щоб курс залишався законним</span></div></div>
-      <div class="fstep"><div class="fnum">04</div><div class="ftxt"><b>Висновок</b><span>Вступна → описова → резолютивна частина — фіксація фактів і кваліфікації проступку</span></div></div>
-      <div class="fstep"><div class="fnum">05</div><div class="ftxt"><b>Дисциплінарне стягнення</b><span>В межах повноважень керівника, з урахуванням тяжкості проступку й обставин</span></div></div>
-    </div>
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="n red">86,4%</div>
+            <div class="l">Головна причина навантаження — мобілізаційні завдання (ТЦК/СП)</div>
+          </div>
+          <div class="stat">
+            <div class="n amber">74,2%</div>
+            <div class="l">Критичний дефіцит часу на превенцію через додаткові навантаження</div>
+          </div>
+          <div class="stat">
+            <div class="n red">53%</div>
+            <div class="l">Недостатньо пального для патрулювання дільниці</div>
+          </div>
+          <div class="stat">
+            <div class="n purple">90,9%</div>
+            <div class="l">Показники KPI не відображають реальні потреби громади</div>
+          </div>
+          <div class="stat">
+            <div class="n amber">34,8%</div>
+            <div class="l">Деякі поліцейські не обрали б цю посаду знову — ризик відтоку до 35% за 2 роки</div>
+          </div>
+        </div>
 
-    <div class="panel">
-      <h3>Критичні точки <span>— контролю</span></h3>
-      <p>Аналіз практики дозволив виявити системні помилки, що ставлять під сумнів легітимність розслідувань. Ми інтегрували ці «точки ризику» в наш канбан-алгоритм для автоматичного контролю. Виявлення та виправлення цих недоліків на ранніх етапах є критично важливим для забезпечення правомірності фінальних рішень.</p>
-    </div>
-    <div class="btn-container">
-        <a href="СР з візуалізацією (останній варіант) (1).html" target="_blank" class="btn-link">Відкрити Карту знань СР 🔗</a>
-    </div>
-  </div>
-</section>
+        <div class="panel">
+          <h3>Точна діагностика <span>— те, що ми знайшли </span></h3>
+          <p>Ми провели пряме опитування 66 офіцерів, що дозволило отримати об’єктивну картину проблем. Визначено
+            критичні точки: надмірне навантаження, пов’язане з мобілізаційними завданнями, дефіцит матеріально-технічних
+            ресурсів та застарілі KPI, які не враховують специфіку роботи з громадою.</p>
+          <p>Це і є цінність нашої роботи: не здогадки, а точні цифри, з якими вже можна діяти.</p>
+        </div>
 
-<!-- SLIDE 3 — СЕКТОР ЗВЕНИГОРОДКА -->
-<section class="slide" id="s3">
-  <div class="inner">
-    <div class="orbit-badge">📡 СЕКТОР 3 Анонімне опитування щодо задоволення умовами служби</div>
-    <div class="eyebrow">Опитувальник</div>
-    <h1 class="big" style="font-size:clamp(34px,5.5vw,64px)">ЗВЕНИГОРОДСЬКИЙ<br>РВП ГУНП В ЧЕРКАСЬКІЙ ОБЛАСТІ</h1>
-    <p class="lead"> Ми опрацювали 47 відповідей, що дозволило побачити об'єктивну картину по всьому гарнізону. Ми відійшли від поверхневих оцінок до детального аналізу діяльності кожного підрозділу окремо</p>
+        <div class="panel" style="border-color:rgba(61,245,160,.25)">
+          <h3 style="color:var(--green)">Готові управлінські рішення: <span style="color:var(--green)">— впровадження в
+              межах чинних повноважень</span></h3>
+          <p>Ми не зупинились на діагнозі. За кожною знайденою проблемою вже стоїть конкретний, реалістичний план —
+            розроблений і готовий до впровадження вже зараз:</p>
+          <div class="tag-row">
+            <span class="tag">1–2 захищені дні на тиждень без ТЦК</span>
+            <span class="tag">Щотижневий облік реального часу</span>
+            <span class="tag">План роботи з громадою</span>
+            <span class="tag">Клопотання щодо ліміту пального</span>
+            <span class="tag">Якісні KPI замість «палочних»</span>
+            <span class="tag">Щомісячна зустріч керівника з ПОГ</span>
+            <span class="tag">Надбавка за сільську специфіку</span>
+            <span class="tag">Виїзний психолог щокварталу</span>
+          </div>
+        </div>
+        <div class="btn-container">
+          <a href="kanban-pog.html" target="_blank" class="btn-link">Відкрити Канбан-дошку ПОГ 🔗</a>
+        </div>
+      </div>
+    </section>
 
-    <div class="stat-grid">
-      <div class="stat"><div class="n amber">5,4/8</div><div class="l">Середня оцінка атмосфери в підрозділі</div></div>
-      <div class="stat"><div class="n red">8</div><div class="l">Осіб планують звільнення найближчим часом</div></div>
-      <div class="stat"><div class="n amber">62%</div><div class="l">Працюють понаднормово щодня або часто</div></div>
-      <div class="stat"><div class="n green">68%</div><div class="l">Хочуть продовжувати службу саме тут</div></div>
-    </div>
+    <!-- SLIDE 2 — ЦЕНТР УПРАВЛІННЯ ДИСЦИПЛІНА -->
+    <section class="slide" id="s2">
+      <div class="inner">
+        <div class="orbit-badge">⚖️ СЕКТОР 2 · МЕХАНІЗМ КОНТРОЛЮ</div>
+        <div class="eyebrow">ЦЕНТР УПРАВЛІННЯ</div>
+        <h1 class="big" style="font-size:clamp(34px,5.5vw,64px)">«Інтерактивний курс «Алгоритм службового розслідування»
+        </h1>
+        <p class="lead">Створено єдиний канбан-алгоритм службових розслідувань. Спираючись на накопичений досвід, ми
+          систематизували весь процес від «нульової точки» до завершального висновку.</p>
 
-    <div class="alert good">
-      <div class="ico">✨</div>
-      <div class="txt"><b>Сектор кадрів — найяскравіша зірка гарнізону</b><span>Атмосфера 7,7/8, довіра до керівника 4,7/5. Це наш еталон — і доказ того, що правильний підхід керівництва реально працює.</span></div>
-    </div>
-    <div class="alert">
-      <div class="ico">🎯</div>
-      <div class="txt"><b>СРПП — найточніша знахідка опитування</b><span>Атмосфера 4,0/8, довіра 2,2/5, зміни по 22–30 годин. Ми знайшли цю точку напруги першими, до того як вона стала кризою — саме для цього і проводилась ця робота.</span></div>
-    </div>
-    <div class="alert warn">
-      <div class="ico">🔍</div>
-      <div class="txt"><b>Відділ превенції та сектор дізнання — під наглядом</b><span>Перевантаження і питання довіри зафіксовані точно, з цифрами — тепер із цим можна працювати адресно.</span></div>
-    </div>
-    <div class="btn-container">
-        <a href="zvenyhorodka_rvp_dashboard.html" target="_blank" class="btn-link">Відкрити Дашборд Звенигородки 🔗</a>
-    </div>
-  </div>
-</section>
+        <div class="funnel">
+          <div class="fstep">
+            <div class="fnum">01</div>
+            <div class="ftxt"><b>Підстава для службового розслідування</b><span> Скарга, повідомлення, виявлене
+                порушення дисципліни</span></div>
+          </div>
+          <div class="fstep">
+            <div class="fnum">02</div>
+            <div class="ftxt"><b>Призначення службового розслідування</b><span>Наказ керівника, форма проведення —
+                одноособово або комісією; строк 30 діб, у воєнний стан — 15 діб</span></div>
+          </div>
+          <div class="fstep">
+            <div class="fnum">03</div>
+            <div class="ftxt"><b>Збір необіхдних даних</b><span>Право поліцейського на пояснення, ознайомлення з
+                матеріалами та представника — під наглядом, щоб курс залишався законним</span></div>
+          </div>
+          <div class="fstep">
+            <div class="fnum">04</div>
+            <div class="ftxt"><b>Висновок</b><span>Вступна → описова → резолютивна частина — фіксація фактів і
+                кваліфікації проступку</span></div>
+          </div>
+          <div class="fstep">
+            <div class="fnum">05</div>
+            <div class="ftxt"><b>Дисциплінарне стягнення</b><span>В межах повноважень керівника, з урахуванням тяжкості
+                проступку й обставин</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Критичні точки <span>— контролю</span></h3>
+          <p>Аналіз практики дозволив виявити системні помилки, що ставлять під сумнів легітимність розслідувань. Ми
+            інтегрували ці «точки ризику» в наш канбан-алгоритм для автоматичного контролю. Виявлення та виправлення цих
+            недоліків на ранніх етапах є критично важливим для забезпечення правомірності фінальних рішень.</p>
+        </div>
+        <div class="btn-container">
+          <a href="sr-visualization.html" target="_blank" class="btn-link">Відкрити Карту знань СР 🔗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 — СЕКТОР ЗВЕНИГОРОДКА -->
+    <section class="slide" id="s3">
+      <div class="inner">
+        <div class="orbit-badge">📡 СЕКТОР 3 Анонімне опитування щодо задоволення умовами служби</div>
+        <div class="eyebrow">Опитувальник</div>
+        <h1 class="big" style="font-size:clamp(34px,5.5vw,64px)">ЗВЕНИГОРОДСЬКИЙ<br>РВП ГУНП В ЧЕРКАСЬКІЙ ОБЛАСТІ</h1>
+        <p class="lead"> Ми опрацювали 47 відповідей, що дозволило побачити об'єктивну картину по всьому гарнізону. Ми
+          відійшли від поверхневих оцінок до детального аналізу діяльності кожного підрозділу окремо</p>
+
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="n amber">5,4/8</div>
+            <div class="l">Середня оцінка атмосфери в підрозділі</div>
+          </div>
+          <div class="stat">
+            <div class="n red">8</div>
+            <div class="l">Осіб планують звільнення найближчим часом</div>
+          </div>
+          <div class="stat">
+            <div class="n amber">62%</div>
+            <div class="l">Працюють понаднормово щодня або часто</div>
+          </div>
+          <div class="stat">
+            <div class="n green">68%</div>
+            <div class="l">Хочуть продовжувати службу саме тут</div>
+          </div>
+        </div>
+
+        <div class="alert good">
+          <div class="ico">✨</div>
+          <div class="txt"><b>Сектор кадрів — найяскравіша зірка гарнізону</b><span>Атмосфера 7,7/8, довіра до керівника
+              4,7/5. Це наш еталон — і доказ того, що правильний підхід керівництва реально працює.</span></div>
+        </div>
+        <div class="alert">
+          <div class="ico">🎯</div>
+          <div class="txt"><b>СРПП — найточніша знахідка опитування</b><span>Атмосфера 4,0/8, довіра 2,2/5, зміни по
+              22–30 годин. Ми знайшли цю точку напруги першими, до того як вона стала кризою — саме для цього і
+              проводилась ця робота.</span></div>
+        </div>
+        <div class="alert warn">
+          <div class="ico">🔍</div>
+          <div class="txt"><b>Відділ превенції та сектор дізнання — під наглядом</b><span>Перевантаження і питання
+              довіри зафіксовані точно, з цифрами — тепер із цим можна працювати адресно.</span></div>
+        </div>
+        <div class="btn-container">
+          <a href="zvenyhorodka_rvp_dashboard.html" target="_blank" class="btn-link">Відкрити Дашборд Звенигородки
+            🔗</a>
+        </div>
+      </div>
+    </section>
 
 
-<!-- SLIDE 4 — КУЛЬМІНАЦІЯ -->
-<section class="slide" id="s5">
-  <div class="inner">
-    <div class="eyebrow">КУЛЬМІНАЦІЯ</div>
-    <p class="closer"> Ми зробили те, на що інші витратили б місяці: перетворили розрізнені дані на готову стратегію управління. У нас є цифри, у нас є інструменти, у нас є команда. </p>
-    <hr class="div">
-    <div class="stat-grid" style="margin-top:10px;">
-      <div class="stat"><div class="n blue">3</div><div class="l">Готових канбани</div></div>
-      <div class="stat"><div class="n green">113</div><div class="l">Респондентів опитано під час дослідження</div></div>
-      <div class="stat"><div class="n purple">12</div><div class="l">Пропозицій по вирішенню</div></div>
-    </div>
-    <p class="lead" style="margin-top:18px;">Від нашої роботи залежить стабільність усієї "галактики". Пишаюся нашоою командою</p>
-  </div>
-</section>
+    <!-- SLIDE 4 — КУЛЬМІНАЦІЯ -->
+    <section class="slide" id="s5">
+      <div class="inner">
+        <div class="eyebrow">КУЛЬМІНАЦІЯ</div>
+        <p class="closer"> Ми зробили те, на що інші витратили б місяці: перетворили розрізнені дані на готову стратегію
+          управління. У нас є цифри, у нас є інструменти, у нас є команда. </p>
+        <hr class="div">
+        <div class="stat-grid" style="margin-top:10px;">
+          <div class="stat">
+            <div class="n blue">3</div>
+            <div class="l">Готових канбани</div>
+          </div>
+          <div class="stat">
+            <div class="n green">113</div>
+            <div class="l">Респондентів опитано під час дослідження</div>
+          </div>
+          <div class="stat">
+            <div class="n purple">12</div>
+            <div class="l">Пропозицій по вирішенню</div>
+          </div>
+        </div>
+        <p class="lead" style="margin-top:18px;">Від нашої роботи залежить стабільність усієї "галактики". Пишаюся
+          нашоою командою</p>
+      </div>
+    </section>
 
-</main>
+  </main>
 
-<script>
-// starfield
-const starsEl = document.getElementById('stars');
-for(let i=0;i<140;i++){
-  const s=document.createElement('div');
-  s.className='star';
-  const sz=Math.random()*2+0.6;
-  s.style.width=sz+'px'; s.style.height=sz+'px';
-  s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
-  s.style.setProperty('--t',(Math.random()*4+2)+'s');
-  starsEl.appendChild(s);
-}
-
-// reveal on view + active dot
-const slides=[...document.querySelectorAll('.slide')];
-const dots=[...document.querySelectorAll('#dots button')];
-const io=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('in');
-      const idx=slides.indexOf(e.target);
-      dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  <script>
+    // starfield
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 140; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const sz = Math.random() * 2 + 0.6;
+      s.style.width = sz + 'px'; s.style.height = sz + 'px';
+      s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
+      s.style.setProperty('--t', (Math.random() * 4 + 2) + 's');
+      starsEl.appendChild(s);
     }
-  });
-},{threshold:0.4});
-slides.forEach(s=>io.observe(s));
 
-dots.forEach(d=>d.addEventListener('click',()=>{
-  slides[+d.dataset.i].scrollIntoView({behavior:'smooth'});
-}));
-</script>
+    // reveal on view + active dot
+    const slides = [...document.querySelectorAll('.slide')];
+    const dots = [...document.querySelectorAll('#dots button')];
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          const idx = slides.indexOf(e.target);
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
+      });
+    }, { threshold: 0.4 });
+    slides.forEach(s => io.observe(s));
+
+    dots.forEach(d => d.addEventListener('click', () => {
+      slides[+d.dataset.i].scrollIntoView({ behavior: 'smooth' });
+    }));
+  </script>
 </body>
+
 </html>
