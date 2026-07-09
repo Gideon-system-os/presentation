@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ПОГ · Павутинка</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --bg2: #0f1520;
+      --web: rgba(140, 180, 255, 0.12);
+      --web-bright: rgba(140, 180, 255, 0.35);
+      --text: #dce8f5;
+      --text2: #8ba5c0;
+      --text3: #4a6480;
+
+      --z1: #4fc3f7;
+      /* дослідження — ice blue */
+      --z2: #a78bfa;
+      /* результати — violet */
+      --z3: #f87171;
+      /* критичні — red */
+      --z4: #34d399;
+      /* пропозиції — mint */
+
+      --z1g: rgba(79, 195, 247, 0.18);
+      --z2g: rgba(167, 139, 250, 0.18);
+      --z3g: rgba(248, 113, 113, 0.18);
+      --z4g: rgba(52, 211, 153, 0.18);
+
+      --font-title: 'Bebas Neue', sans-serif;
+      --font-body: 'Raleway', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: var(--font-body);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- HEADER ---- */
+    .top-bar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 24px;
+      border-bottom: 1px solid rgba(140, 180, 255, 0.1);
+      background: rgba(10, 14, 20, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    .top-logo {
+      font-family: var(--font-title);
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      color: var(--text);
+    }
+
+    .top-logo span {
+      color: var(--z1);
+    }
+
+    .top-sub {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+    }
+
+    .top-legend {
+      margin-left: auto;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: var(--text2);
+      font-weight: 500;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .leg-item:hover {
+      border-color: currentColor;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .leg-item.active {
+      border-color: currentColor;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .leg-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    /* ---- MAIN ---- */
+    .canvas-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #main-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ---- CARDS (foreignObject rendered as HTML) ---- */
+    .node-card {
+      background: rgba(12, 18, 28, 0.92);
+      border: 1px solid rgba(140, 180, 255, 0.15);
+      border-radius: 10px;
+      padding: 11px 13px;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+      user-select: none;
+    }
+
+    .node-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      border-radius: 10px 10px 0 0;
+      background: var(--node-color, #4fc3f7);
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .node-card:hover {
+      border-color: var(--node-color, #4fc3f7);
+      background: rgba(15, 22, 34, 0.97);
+    }
+
+    .node-card:hover::before {
+      opacity: 1;
+    }
+
+    .node-card.selected {
+      border-color: var(--node-color, #4fc3f7);
+      box-shadow: 0 0 20px -4px var(--node-color, #4fc3f7), inset 0 0 30px -10px var(--node-color, #4fc3f7);
+      background: rgba(15, 22, 34, 0.98);
+    }
+
+    .node-card.selected::before {
+      opacity: 1;
+    }
+
+    .node-card.dimmed {
+      opacity: 0.15;
+    }
+
+    .nc-zone {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      color: var(--node-color);
+    }
+
+    .nc-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .nc-footer {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .nc-tag {
+      font-size: 8.5px;
+      padding: 1.5px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nc-stat {
+      font-size: 10px;
+      font-weight: 700;
+      margin-left: auto;
+      color: var(--node-color);
+      opacity: 0.9;
+    }
+
+    /* ---- CENTER HUB ---- */
+    .hub-label {
+      font-family: var(--font-title);
+      font-size: 15px;
+      letter-spacing: 0.12em;
+      fill: var(--text);
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    /* ---- DETAIL PANEL ---- */
+    .detail {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      width: min(560px, 92vw);
+      background: rgba(10, 15, 22, 0.97);
+      border: 1px solid rgba(140, 180, 255, 0.2);
+      border-radius: 14px;
+      padding: 22px 26px;
+      z-index: 200;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+    }
+
+    .detail.open {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .detail-zone {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .detail-title {
+      font-family: var(--font-title);
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .detail-body {
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--text2);
+      font-weight: 300;
+      margin-bottom: 14px;
+    }
+
+    .detail-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-link-chip {
+      font-size: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(140, 180, 255, 0.2);
+      color: var(--text2);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-weight: 500;
+    }
+
+    .detail-link-chip:hover {
+      border-color: rgba(140, 180, 255, 0.5);
+      color: var(--text);
+      background: rgba(140, 180, 255, 0.08);
+    }
+
+    .detail-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(140, 180, 255, 0.2);
+      background: transparent;
+      color: var(--text3);
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .detail-close-btn:hover {
+      background: rgba(140, 180, 255, 0.1);
+      color: var(--text);
+    }
+
+    /* zone ring labels */
+    .ring-label {
+      font-family: var(--font-title);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      fill-opacity: 0.5;
+      text-anchor: middle;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top-bar">
+    <div class="top-logo">ПОГ <span>·</span> FLOW</div>
+    <div class="top-sub">Аналіз опитування · 66 респондентів · Натисніть вузол для деталей</div>
+  </div>
+
+  <div class="canvas-wrap" id="canvas-wrap">
+    <svg id="main-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <div class="detail" id="detail">
+    <button class="detail-close-btn" id="detail-close">✕</button>
+    <div class="detail-zone" id="d-zone"></div>
+    <div class="detail-title" id="d-title"></div>
+    <div class="detail-body" id="d-body"></div>
+    <div class="detail-links" id="d-links"></div>
+  </div>
+
+  <script>
+    // ================================================================
+    // DATA — реалістичні пропозиції (без законодавчих змін)
+    // ================================================================
+    const ZONE_META = {
+      research: { label: 'ДОСЛІДЖЕННЯ', color: '#4fc3f7', ring: 1 },
+      results: { label: 'РЕЗУЛЬТАТИ', color: '#a78bfa', ring: 2 },
+      critical: { label: 'КРИТИЧНЕ', color: '#f87171', ring: 3 },
+      solutions: { label: 'ПРОПОЗИЦІЯ', color: '#34d399', ring: 4 },
+    };
+
+    const NODES = [
+      // ── RESEARCH ──────────────────────────────────────────
+      {
+        id: 'R1', zone: 'research', tag: 'Навантаження',
+        title: 'Навантаження та нормативи',
+        body: 'Досліджувалась відповідність реального завантаження офіцерів нормативному, структура робочого дня та час на превентивну роботу.',
+        links: ['D1', 'D2', 'D3', 'C1']
+      },
+
+      {
+        id: 'R2', zone: 'research', tag: 'ТЦК / СП',
+        title: 'Залучення до ТЦК та СП',
+        body: 'Яка частка часу витрачається на мобілізаційні заходи та як це впливає на основну роботу з громадою.',
+        links: ['D1', 'D2', 'D3', 'C1', 'C2', 'S1', 'S2']
+      },
+
+      {
+        id: 'R3', zone: 'research', tag: 'МТЗ',
+        title: 'Матеріально-технічне забезпечення',
+        body: 'Стан авто, достатність пального та спецзасобів, умови поліцейських станцій.',
+        links: ['D4', 'D5', 'C3', 'S4', 'S5']
+      },
+
+      {
+        id: 'R4', zone: 'research', tag: 'Управління',
+        title: 'Автономність та підтримка керівництва',
+        body: 'Чи може ПОГ самостійно планувати роботу? Як керівництво підтримує у вирішенні проблем?',
+        links: ['D6', 'D7', 'C4', 'S6', 'S7']
+      },
+
+      {
+        id: 'R5', zone: 'research', tag: 'Громада',
+        title: 'Взаємодія з громадою та владою',
+        body: 'Механізми залучення мешканців, рівень підтримки від голів громад, проблеми у взаємодії.',
+        links: ['D8', 'C5', 'S8', 'S9']
+      },
+
+      {
+        id: 'R6', zone: 'research', tag: 'Кадри',
+        title: 'Кадровий стан та мотивація',
+        body: 'Задоволеність роботою, плани на майбутнє, ризик відтоку з посади ПОГ.',
+        links: ['D9', 'C6', 'S10', 'S11', 'S12']
+      },
+
+      // ── RESULTS ───────────────────────────────────────────
+      {
+        id: 'D1', zone: 'results', tag: 'ТЦК', stat: '86,4%',
+        title: '86,4% — ТЦК головний фактор перевантаження',
+        body: '57 із 66 офіцерів назвали залучення до мобілізаційних заходів головною причиною надмірного навантаження.',
+        links: ['R1', 'R2', 'C1', 'C2', 'S1', 'S2']
+      },
+
+      {
+        id: 'D2', zone: 'results', tag: 'Час', stat: '54,5%',
+        title: '54,5% витрачають >50% часу на ТЦК',
+        body: 'Більше половини службового дня йде на непрофільні завдання. Ще 24,2% — від 25 до 50% часу.',
+        links: ['R1', 'R2', 'C1', 'S1']
+      },
+
+      {
+        id: 'D3', zone: 'results', tag: 'Превенція', stat: '74,2%',
+        title: '74,2% — менше 25% або нуль часу на превенцію',
+        body: 'Обходи, перевірка піднаглядних, профілактична робота — основні функції ПОГ — фактично зникли з розкладу.',
+        links: ['R1', 'R2', 'C1', 'C2']
+      },
+
+      {
+        id: 'D4', zone: 'results', tag: 'Паливо', stat: '53%',
+        title: '53% без достатнього пального',
+        body: '28 офіцерів мають пальне лише на екстрені виклики. 7 — вимушені витрачати власні кошти або просити громаду.',
+        links: ['R3', 'C3', 'S4']
+      },
+
+      {
+        id: 'D5', zone: 'results', tag: 'Станції', stat: '42,4%',
+        title: '42,4% станцій не відповідають нормам',
+        body: 'Слабкий інтернет, проблеми з опаленням, брак обладнання — у 28 офіцерів часткові або серйозні проблеми.',
+        links: ['R3', 'S5']
+      },
+
+      {
+        id: 'D6', zone: 'results', tag: 'КПЕ', stat: '90,9%',
+        title: '90,9% — завдання не відповідають потребам громади',
+        body: 'Керівництво орієнтоване на формальні «показники», а не на реальну безпеку. Лише 9,1% відчувають повну відповідність.',
+        links: ['R4', 'C4', 'S6', 'S7']
+      },
+
+      {
+        id: 'D7', zone: 'results', tag: 'Підтримка', stat: '78,7%',
+        title: '78,7% без реальної підтримки керівництва',
+        body: '43,9% — лише методичні поради. 34,8% — залишені сам на сам із проблемами громади.',
+        links: ['R4', 'C4', 'S7']
+      },
+
+      {
+        id: 'D8', zone: 'results', tag: 'Влада', stat: '16,7%',
+        title: '16,7% — конфліктна або низька підтримка влади',
+        body: 'У 15,2% місцева влада намагається використати ПОГ для невластивих функцій: охорона об\'єктів, розсилка листів.',
+        links: ['R5', 'C5', 'S8', 'S9']
+      },
+
+      {
+        id: 'D9', zone: 'results', tag: 'Відтік', stat: '34,8%',
+        title: '34,8% не обрали б посаду знову',
+        body: '20 — «скоріше ні». 3 — «категорично ні». 56,1% у стані невизначеності. Ризик відтоку — критичний.',
+        links: ['R6', 'C6', 'S10', 'S11', 'S12']
+      },
+
+      // ── CRITICAL ──────────────────────────────────────────
+      {
+        id: 'C1', zone: 'critical', tag: '🔴 Критична',
+        title: 'Превентивна робота зупинена через ТЦК',
+        body: '65,2% — ТЦК суттєво заважає. Лише 3% встигають виконувати всі обов\'язки. ПОГ існує юридично, але не функціонально.',
+        links: ['R1', 'R2', 'D1', 'D2', 'D3', 'S1', 'S2']
+      },
+
+      {
+        id: 'C2', zone: 'critical', tag: '🔴 Критична',
+        title: 'Офіцери без часу на роботу з мешканцями',
+        body: 'Обходи дільниці, перевірка піднаглядних, профілактика — зникли. Громади фактично позбавлені обіцяного захисту.',
+        links: ['R2', 'D3', 'S1', 'S2', 'S3']
+      },
+
+      {
+        id: 'C3', zone: 'critical', tag: '🟠 Висока',
+        title: 'Хронічна нестача пального — патрулювання неможливе',
+        body: 'Ліміт 140 л/місяць для сільської дільниці з великими відстанями — катастрофічно мало. Частина офіцерів платить власним коштом.',
+        links: ['R3', 'D4', 'S4']
+      },
+
+      {
+        id: 'C4', zone: 'critical', tag: '🔴 Критична',
+        title: '«Паличні» KPI знищують мотивацію',
+        body: 'Система оцінювання вимірює протоколи, а не безпеку. Офіцери вимушені гнатися за формальними показниками замість реальної роботи.',
+        links: ['R4', 'D6', 'D7', 'S6', 'S7']
+      },
+
+      {
+        id: 'C5', zone: 'critical', tag: '🟡 Середня',
+        title: 'Місцева влада використовує ПОГ не за призначенням',
+        body: 'Охорона об\'єктів, розсилка листів, участь у заходах — все це накладається на офіцера поза його реальними обов\'язками.',
+        links: ['R5', 'D8', 'S8', 'S9']
+      },
+
+      {
+        id: 'C6', zone: 'critical', tag: '🔴 Критична',
+        title: 'Кадрова криза: до 35% можуть піти за 2 роки',
+        body: '34,8% розчаровані. 56,1% в стані «ще подивимось». Без змін система втратить найдосвідченіших офіцерів.',
+        links: ['R6', 'D9', 'S10', 'S11', 'S12']
+      },
+
+      // ── SOLUTIONS (реалістичні — в рамках підрозділу) ────
+      {
+        id: 'S1', zone: 'solutions', tag: 'Пріоритет 1',
+        title: 'Внутрішній наказ: фіксований день без ТЦК на тижні',
+        body: 'Керівник підрозділу видає наказ: кожен ПОГ має 1–2 дні на тиждень, які повністю захищені від залучення до ТЦК/СП. Офіцер у ці дні працює лише з громадою.',
+        links: ['R2', 'D1', 'D2', 'C1', 'C2']
+      },
+
+      {
+        id: 'S2', zone: 'solutions', tag: 'Пріоритет 1',
+        title: 'Щотижневий звіт: скільки часу реально на превенцію',
+        body: 'Запровадити просту форму самозвітності: офіцер фіксує реальний розподіл часу. Керівник бачить картину та може реагувати на завантаження конкретного ПОГ.',
+        links: ['R2', 'D2', 'D3', 'C1']
+      },
+
+      {
+        id: 'S3', zone: 'solutions', tag: 'Пріоритет 1',
+        title: 'Мінімальний план роботи з громадою на тиждень',
+        body: 'Керівник разом з офіцером встановлює реалістичний мінімум: 2 обходи + 1 зустріч з мешканцями на тиждень. Виконання — обов\'язкове, а не за залишковим принципом.',
+        links: ['R2', 'D3', 'C2']
+      },
+
+      {
+        id: 'S4', zone: 'solutions', tag: 'Пріоритет 2',
+        title: 'Клопотання до відділу логістики щодо перегляду ліміту пального',
+        body: 'Керівник відділу подає аргументоване клопотання з даними реальних маршрутів. Навіть +50–70 л на місяць суттєво полегшить ситуацію — без зміни будь-якого закону.',
+        links: ['R3', 'D4', 'C3']
+      },
+
+      {
+        id: 'S5', zone: 'solutions', tag: 'Пріоритет 2',
+        title: 'Облік дефіцитів станцій і подання заявок через ОМС',
+        body: 'Скласти реєстр нестач по кожній станції. Направити офіційні запити до відповідних голів громад — більшість готові допомогти, але їх просто не просять конкретно.',
+        links: ['R3', 'D5']
+      },
+
+      {
+        id: 'S6', zone: 'solutions', tag: 'Пріоритет 1',
+        title: 'Замінити «кількісні» KPI на якісні всередині підрозділу',
+        body: 'Керівник самостійно переглядає внутрішні критерії оцінки: додати показник «відгуки мешканців», «кількість вирішених проблем громади» поряд із кількістю протоколів.',
+        links: ['R4', 'D6', 'C4']
+      },
+
+      {
+        id: 'S7', zone: 'solutions', tag: 'Пріоритет 1',
+        title: 'Щомісячна особиста зустріч керівника з кожним ПОГ',
+        body: '15-хвилинна зустріч раз на місяць: що заважає, що потрібно, яка проблема застрягла. Керівник не чекає рапорту — сам питає. Це змінює відчуття підтримки.',
+        links: ['R4', 'D7', 'C4']
+      },
+
+      {
+        id: 'S8', zone: 'solutions', tag: 'Пріоритет 2',
+        title: 'Чіткий перелік: що ПОГ не зобов\'язаний робити для ОМС',
+        body: 'Підрозділ формує внутрішній документ із переліком завдань, які НЕ входять до обов\'язків ПОГ. Офіцер може посилатись на нього при тиску з боку місцевої влади.',
+        links: ['R5', 'D8', 'C5']
+      },
+
+      {
+        id: 'S9', zone: 'solutions', tag: 'Пріоритет 3',
+        title: 'Спільна зустріч керівника + ПОГ + голова громади раз на квартал',
+        body: 'Формат "трикутник": офіцер, його керівник і голова громади. Обговорення пріоритетів, взаємних очікувань. Знімає 80% непорозумінь.',
+        links: ['R5', 'D8', 'C5']
+      },
+
+      {
+        id: 'S10', zone: 'solutions', tag: 'Пріоритет 1',
+        title: 'Клопотання про надбавку за специфіку сільської служби',
+        body: 'Через офіційні канали подати колективне клопотання про фінансову надбавку для ПОГ у сільській місцевості. Це реально і прецеденти є.',
+        links: ['R6', 'D9', 'C6']
+      },
+
+      {
+        id: 'S11', zone: 'solutions', tag: 'Пріоритет 2',
+        title: 'Залучити штатного психолога до регулярних виїздів до ПОГ',
+        body: 'Керівник організовує виїзди психолога підрозділу до ПОГ раз на квартал. Не обов\'язково, але доступно. Профілактика вигорання — дешевша за пошук нового офіцера.',
+        links: ['R6', 'D9', 'C6']
+      },
+
+      {
+        id: 'S12', zone: 'solutions', tag: 'Пріоритет 2',
+        title: 'Щорічне анонімне опитування всередині підрозділу',
+        body: 'Керівник організовує просте онлайн-анкетування раз на рік: що змінилось, що досі болить. Результати — на відкритій нараді. Офіцери бачать, що їх чули.',
+        links: ['R6', 'D9', 'C6']
+      },
+    ];
+
+    // ================================================================
+    // LAYOUT — spider web
+    // ================================================================
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const ZONES = ['research', 'results', 'critical', 'solutions'];
+    const ZONE_ANGLES = { research: -135, results: -45, critical: 45, solutions: 135 };
+    // each zone occupies 90° arc centred on its angle
+
+    let W, H, CX, CY;
+    let nodePositions = {}; // id -> {x,y,w,h}
+    let selectedNode = null;
+
+    const CARD_W = 195;
+    const CARD_H = 120;
+
+    function getZoneNodes(zone) {
+      return NODES.filter(n => n.zone === zone);
+    }
+
+    function computePositions() {
+      W = document.getElementById('canvas-wrap').offsetWidth;
+      H = document.getElementById('canvas-wrap').offsetHeight;
+      CX = W / 2;
+      CY = H / 2;
+
+      const radius = 350; // Фіксований радіус
+
+      nodePositions = {};
+      const allNodes = NODES;
+      const numNodes = allNodes.length;
+
+      allNodes.forEach((node, i) => {
+        // Розраховуємо кут для кожної картки для рівномірного розподілу по колу
+        const angle = (i / numNodes) * 2 * Math.PI - (Math.PI / 2); // Починаємо зверху (-90 градусів)
+        const x = CX + radius * Math.cos(angle);
+        const y = CY + radius * Math.sin(angle);
+        nodePositions[node.id] = { x, y, w: CARD_W, h: CARD_H };
+      });
+    }
+
+    // ================================================================
+    // DRAW
+    // ================================================================
+    function draw() {
+      const svg = document.getElementById('main-svg');
+      svg.innerHTML = '';
+
+      drawWebBackground(svg);
+      drawConnections(svg);
+      drawHub(svg);
+      drawNodes(svg);
+    }
+
+    function drawWebBackground(svg) {
+      // Concentric polygon rings
+      const minDim = Math.min(W, H);
+      const rings = 6;
+      const spokeCount = 12;
+
+      for (let r = 1; r <= rings; r++) {
+        const radius = (minDim * 0.68) * (r / rings);
+        const points = [];
+        for (let s = 0; s < spokeCount; s++) {
+          const angle = (s / spokeCount) * Math.PI * 2 - Math.PI / 2;
+          points.push(`${CX + radius * Math.cos(angle)},${CY + radius * Math.sin(angle)}`);
+        }
+        const poly = document.createElementNS(SVG_NS, 'polygon');
+        poly.setAttribute('points', points.join(' '));
+        poly.setAttribute('fill', 'none');
+        poly.setAttribute('stroke', r === 1 ? 'rgba(140,180,255,0.2)' : 'rgba(140,180,255,0.07)');
+        poly.setAttribute('stroke-width', r === 1 ? '1.5' : '0.8');
+        svg.appendChild(poly);
+      }
+
+      // Spokes
+      for (let s = 0; s < spokeCount; s++) {
+        const angle = (s / spokeCount) * Math.PI * 2 - Math.PI / 2;
+        const r = minDim * 0.68;
+        const line = document.createElementNS(SVG_NS, 'line');
+        line.setAttribute('x1', CX); line.setAttribute('y1', CY);
+        line.setAttribute('x2', CX + r * Math.cos(angle));
+        line.setAttribute('y2', CY + r * Math.sin(angle));
+        line.setAttribute('stroke', 'rgba(140,180,255,0.05)');
+        line.setAttribute('stroke-width', '0.8');
+        svg.appendChild(line);
+      }
+    }
+
+    function drawZoneArcs(svg) {
+      const minDim = Math.min(W, H);
+      const outerR = minDim * 0.7;
+      const innerR = minDim * 0.07;
+
+      ZONES.forEach(zone => {
+        const color = ZONE_META[zone].color;
+        const baseAngle = ZONE_ANGLES[zone] * Math.PI / 180;
+        const halfSpread = Math.PI / 4; // 45° each side
+
+        const startAngle = baseAngle - halfSpread;
+        const endAngle = baseAngle + halfSpread;
+
+        const x1o = CX + outerR * Math.cos(startAngle);
+        const y1o = CY + outerR * Math.sin(startAngle);
+        const x2o = CX + outerR * Math.cos(endAngle);
+        const y2o = CY + outerR * Math.sin(endAngle);
+        const x1i = CX + innerR * Math.cos(startAngle);
+        const y1i = CY + innerR * Math.sin(startAngle);
+        const x2i = CX + innerR * Math.cos(endAngle);
+        const y2i = CY + innerR * Math.sin(endAngle);
+
+        // gradient fill sector
+        const gradId = `grad-${zone}`;
+        const defs = svg.querySelector('defs') || (() => { const d = document.createElementNS(SVG_NS, 'defs'); svg.prepend(d); return d; })();
+        const grad = document.createElementNS(SVG_NS, 'radialGradient');
+        grad.setAttribute('id', gradId);
+        grad.setAttribute('cx', '50%'); grad.setAttribute('cy', '50%');
+        grad.setAttribute('r', '50%');
+        grad.setAttribute('gradientUnits', 'objectBoundingBox');
+        const s1 = document.createElementNS(SVG_NS, 'stop');
+        s1.setAttribute('offset', '0%'); s1.setAttribute('stop-color', color); s1.setAttribute('stop-opacity', '0.0');
+        const s2 = document.createElementNS(SVG_NS, 'stop');
+        s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', color); s2.setAttribute('stop-opacity', '0.06');
+        grad.appendChild(s1); grad.appendChild(s2);
+        defs.appendChild(grad);
+
+        const path = document.createElementNS(SVG_NS, 'path');
+        const d = [
+          `M ${x1i} ${y1i}`,
+          `L ${x1o} ${y1o}`,
+          `A ${outerR} ${outerR} 0 0 1 ${x2o} ${y2o}`,
+          `L ${x2i} ${y2i}`,
+          `A ${innerR} ${innerR} 0 0 0 ${x1i} ${y1i}`,
+          'Z'
+        ].join(' ');
+        path.setAttribute('d', d);
+        path.setAttribute('fill', `url(#${gradId})`);
+        svg.appendChild(path);
+
+        // arc border line (outer)
+        const arcPath = document.createElementNS(SVG_NS, 'path');
+        arcPath.setAttribute('d', `M ${x1o} ${y1o} A ${outerR} ${outerR} 0 0 1 ${x2o} ${y2o}`);
+        arcPath.setAttribute('fill', 'none');
+        arcPath.setAttribute('stroke', color);
+        arcPath.setAttribute('stroke-width', '1.5');
+        arcPath.setAttribute('stroke-opacity', '0.3');
+        svg.appendChild(arcPath);
+
+        // zone label
+        const labelAngle = baseAngle;
+        const labelR = outerR * 1.04;
+        const lx = CX + labelR * Math.cos(labelAngle);
+        const ly = CY + labelR * Math.sin(labelAngle);
+        const text = document.createElementNS(SVG_NS, 'text');
+        text.setAttribute('x', lx); text.setAttribute('y', ly);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'middle');
+        text.setAttribute('font-family', 'Bebas Neue, sans-serif');
+        text.setAttribute('font-size', '11');
+        text.setAttribute('letter-spacing', '2');
+        text.setAttribute('fill', color);
+        text.setAttribute('opacity', '0.5');
+        text.textContent = ZONE_META[zone].label;
+        svg.appendChild(text);
+      });
+    }
+
+    function drawConnections(svg) {
+      const drawn = new Set();
+      const allConns = [];
+
+      NODES.forEach(node => {
+        (node.links || []).forEach(lid => {
+          const key = [node.id, lid].sort().join('--');
+          if (drawn.has(key)) return;
+          drawn.add(key);
+          const a = nodePositions[node.id];
+          const b = nodePositions[lid];
+          if (!a || !b) return;
+          allConns.push({ from: node.id, to: lid, a, b });
+        });
+      });
+
+      // Group: draw all as dim web threads
+      allConns.forEach(({ from, to, a, b }) => {
+        const nodeA = NODES.find(n => n.id === from);
+        const nodeB = NODES.find(n => n.id === to);
+        const colorA = ZONE_META[nodeA.zone].color;
+        const colorB = ZONE_META[nodeB.zone].color;
+
+        const cx1 = a.x + (b.x - a.x) * 0.3;
+        const cy1 = a.y + (b.y - a.y) * 0.3;
+        const cx2 = a.x + (b.x - a.x) * 0.7;
+        const cy2 = a.y + (b.y - a.y) * 0.7;
+        // slight curve toward center
+        const pullX = (CX - (a.x + b.x) / 2) * 0.12;
+        const pullY = (CY - (a.y + b.y) / 2) * 0.12;
+
+        const path = document.createElementNS(SVG_NS, 'path');
+        path.setAttribute('d', `M ${a.x} ${a.y} C ${cx1 + pullX} ${cy1 + pullY}, ${cx2 + pullX} ${cy2 + pullY}, ${b.x} ${b.y}`);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', colorA);
+        path.setAttribute('stroke-width', '1');
+        path.setAttribute('stroke-opacity', '0.12');
+        path.setAttribute('stroke-dasharray', '4 5');
+        path.dataset.from = from;
+        path.dataset.to = to;
+        path.classList.add('conn-path');
+        svg.appendChild(path);
+      });
+    }
+
+    function drawHub(svg) {
+      // center glow
+      const defs = svg.querySelector('defs') || (() => { const d = document.createElementNS(SVG_NS, 'defs'); svg.prepend(d); return d; })();
+      const hubGrad = document.createElementNS(SVG_NS, 'radialGradient');
+      hubGrad.setAttribute('id', 'hub-grad');
+      hubGrad.setAttribute('cx', '50%'); hubGrad.setAttribute('cy', '50%'); hubGrad.setAttribute('r', '50%');
+      const hs1 = document.createElementNS(SVG_NS, 'stop');
+      hs1.setAttribute('offset', '0%'); hs1.setAttribute('stop-color', '#4fc3f7'); hs1.setAttribute('stop-opacity', '0.15');
+      const hs2 = document.createElementNS(SVG_NS, 'stop');
+      hs2.setAttribute('offset', '100%'); hs2.setAttribute('stop-color', '#4fc3f7'); hs2.setAttribute('stop-opacity', '0');
+      hubGrad.appendChild(hs1); hubGrad.appendChild(hs2);
+      defs.appendChild(hubGrad);
+
+      const circle = document.createElementNS(SVG_NS, 'circle');
+      circle.setAttribute('cx', CX); circle.setAttribute('cy', CY);
+      circle.setAttribute('r', Math.min(W, H) * 0.065);
+      circle.setAttribute('fill', 'url(#hub-grad)');
+      circle.setAttribute('stroke', 'rgba(79,195,247,0.3)');
+      circle.setAttribute('stroke-width', '1');
+      svg.appendChild(circle);
+
+      const innerC = document.createElementNS(SVG_NS, 'circle');
+      innerC.setAttribute('cx', CX); innerC.setAttribute('cy', CY);
+      innerC.setAttribute('r', Math.min(W, H) * 0.028);
+      innerC.setAttribute('fill', 'rgba(79,195,247,0.1)');
+      innerC.setAttribute('stroke', 'rgba(79,195,247,0.6)');
+      innerC.setAttribute('stroke-width', '1.5');
+      svg.appendChild(innerC);
+
+      const t1 = document.createElementNS(SVG_NS, 'text');
+      t1.setAttribute('x', CX); t1.setAttribute('y', CY - 6);
+      t1.setAttribute('text-anchor', 'middle'); t1.setAttribute('dominant-baseline', 'middle');
+      t1.setAttribute('font-family', 'Bebas Neue, sans-serif');
+      t1.setAttribute('font-size', '13');
+      t1.setAttribute('letter-spacing', '3');
+      t1.setAttribute('fill', 'rgba(220,232,245,0.7)');
+      t1.textContent = 'ПОГ';
+      svg.appendChild(t1);
+
+      const t2 = document.createElementNS(SVG_NS, 'text');
+      t2.setAttribute('x', CX); t2.setAttribute('y', CY + 9);
+      t2.setAttribute('text-anchor', 'middle'); t2.setAttribute('dominant-baseline', 'middle');
+      t2.setAttribute('font-family', 'Raleway, sans-serif');
+      t2.setAttribute('font-size', '7');
+      t2.setAttribute('letter-spacing', '1');
+      t2.setAttribute('fill', 'rgba(140,165,192,0.5)');
+      t2.textContent = '66 resp.';
+      svg.appendChild(t2);
+    }
+
+    function drawNodes(svg) {
+      NODES.forEach((node, idx) => {
+        const pos = nodePositions[node.id];
+        if (!pos) return;
+        const color = ZONE_META[node.zone].color;
+        const x = pos.x - CARD_W / 2;
+        const y = pos.y - CARD_H / 2;
+
+        // glow circle behind card
+        const glowR = Math.max(CARD_W, CARD_H) * 0.55;
+        const glow = document.createElementNS(SVG_NS, 'ellipse');
+        glow.setAttribute('cx', pos.x); glow.setAttribute('cy', pos.y);
+        glow.setAttribute('rx', CARD_W * 0.6); glow.setAttribute('ry', CARD_H * 0.6);
+        glow.setAttribute('fill', color);
+        glow.setAttribute('opacity', '0.04');
+        glow.dataset.nodeGlow = node.id;
+        svg.appendChild(glow);
+
+        const fo = document.createElementNS(SVG_NS, 'foreignObject');
+        fo.setAttribute('x', x); fo.setAttribute('y', y);
+        fo.setAttribute('width', CARD_W); fo.setAttribute('height', CARD_H);
+        fo.dataset.nodeId = node.id;
+        fo.style.cssText = `overflow:visible; animation: riseIn 0.4s ease ${idx * 0.035}s both;`;
+
+        const div = document.createElement('div');
+        div.className = 'node-card';
+        div.style.setProperty('--node-color', color);
+
+        const statHtml = node.stat
+          ? `<span class="nc-stat">${node.stat}</span>`
+          : '';
+
+        div.innerHTML = `
+      <div class="nc-zone">${ZONE_META[node.zone].label}</div>
+      <div class="nc-title">${node.title}</div>
+      <div class="nc-footer">
+        <span class="nc-tag">${node.tag}</span>
+        ${statHtml}
+      </div>
+    `;
+
+        div.addEventListener('click', (e) => { e.stopPropagation(); onNodeClick(node); });
+        fo.appendChild(div);
+        svg.appendChild(fo);
+      });
+    }
+
+    // ================================================================
+    // INTERACTION
+    // ================================================================
+    function onNodeClick(node) {
+      if (selectedNode === node.id) {
+        clearSelection();
+        return;
+      }
+      selectedNode = node.id;
+      highlightNode(node);
+      openDetail(node);
+    }
+
+    function highlightNode(node) {
+      const related = new Set([node.id, ...(node.links || [])]);
+      const color = ZONE_META[node.zone].color;
+
+      // cards
+      document.querySelectorAll('.node-card').forEach(el => {
+        const fo = el.closest('foreignObject');
+        const nid = fo?.dataset.nodeId;
+        el.classList.remove('selected', 'dimmed');
+        if (nid === node.id) el.classList.add('selected');
+        else if (!related.has(nid)) el.classList.add('dimmed');
+      });
+
+      // connection lines
+      document.querySelectorAll('.conn-path').forEach(path => {
+        const f = path.dataset.from, t = path.dataset.to;
+        const isRelated = (f === node.id || t === node.id);
+        if (isRelated) {
+          path.setAttribute('stroke-opacity', '0.85');
+          path.setAttribute('stroke-width', '2');
+          path.setAttribute('stroke-dasharray', 'none');
+          const other = f === node.id ? t : f;
+          const otherNode = NODES.find(n => n.id === other);
+          path.setAttribute('stroke', ZONE_META[otherNode.zone].color);
+        } else {
+          path.setAttribute('stroke-opacity', '0.02');
+          path.setAttribute('stroke-width', '0.8');
+        }
+      });
+    }
+
+    function clearSelection() {
+      selectedNode = null;
+      document.querySelectorAll('.node-card').forEach(el => el.classList.remove('selected', 'dimmed'));
+      document.querySelectorAll('.conn-path').forEach(path => {
+        path.setAttribute('stroke-opacity', '0.12');
+        path.setAttribute('stroke-width', '1');
+        path.setAttribute('stroke-dasharray', '4 5');
+        const fid = path.dataset.from;
+        const fn = NODES.find(n => n.id === fid);
+        if (fn) path.setAttribute('stroke', ZONE_META[fn.zone].color);
+      });
+      closeDetail();
+    }
+
+    function openDetail(node) {
+      const color = ZONE_META[node.zone].color;
+      const zoneLabels = { research: 'Що досліджувалось', results: 'Результат опитування', critical: 'Критична проблема', solutions: 'Пропозиція' };
+
+      document.getElementById('d-zone').textContent = zoneLabels[node.zone];
+      document.getElementById('d-zone').style.color = color;
+      document.getElementById('d-title').textContent = node.title;
+
+      let bodyHtml = node.body;
+      if (node.stat) {
+        bodyHtml = `<span style="font-size:22px;font-family:'Bebas Neue',sans-serif;color:${color};letter-spacing:0.05em">${node.stat}</span><br>` + node.body;
+      }
+      document.getElementById('d-body').innerHTML = bodyHtml;
+
+      const linksEl = document.getElementById('d-links');
+      linksEl.innerHTML = '';
+      if (node.links && node.links.length) {
+        const label = document.createElement('span');
+        label.style.cssText = 'font-size:10px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-right:6px;font-weight:600;';
+        label.textContent = 'Зв\'язки:';
+        linksEl.appendChild(label);
+        node.links.forEach(lid => {
+          const ln = NODES.find(n => n.id === lid);
+          if (!ln) return;
+          const chip = document.createElement('span');
+          chip.className = 'detail-link-chip';
+          chip.style.borderColor = ZONE_META[ln.zone].color + '55';
+          chip.style.color = ZONE_META[ln.zone].color;
+          chip.textContent = ln.title.length > 32 ? ln.title.slice(0, 30) + '…' : ln.title;
+          chip.addEventListener('click', () => onNodeClick(ln));
+          linksEl.appendChild(chip);
+        });
+      }
+
+      document.getElementById('detail').classList.add('open');
+    }
+
+    function closeDetail() {
+      document.getElementById('detail').classList.remove('open');
+    }
+
+    // ================================================================
+    // INIT
+    // ================================================================
+    document.getElementById('detail-close').addEventListener('click', () => { clearSelection(); });
+    document.getElementById('canvas-wrap').addEventListener('click', () => { clearSelection(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') clearSelection(); });
+
+    // add keyframe animation
+    const style = document.createElement('style');
+    style.textContent = `@keyframes riseIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }`;
+    document.head.appendChild(style);
+
+    function init() {
+      computePositions();
+      draw();
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(init, 120);
+    });
+
+    init();
+  </script>
+</body>
+
+</html>
